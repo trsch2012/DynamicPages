@@ -7,7 +7,7 @@ namespace DynamicPages.Code
 {
     public interface IPage
     {
-        IList<KeyValuePair<string, IPageSection>> PageSections { get; set; }
+        IList<KeyValuePair<string, IWidget>> PageWidgets { get; set; }
         string View { get; set; }
     }
 }

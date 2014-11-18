@@ -16,19 +16,41 @@ namespace DynamicPages.Code.Extensions
             try
             {
                 var page = (htmlHelper.ViewData.Model as IPage);
-                var pageSections = page.PageSections;
-                var renderedWidgets = string.Empty;
-                foreach (var pageSection in pageSections.Where(x=>x.Key.Equals(zoneId, StringComparison.OrdinalIgnoreCase)))
+                if (page != null)
                 {
-                    renderedWidgets += htmlHelper.Partial(pageSection.Value.View, pageSection.Value.Model, htmlHelper.ViewData);
+                    bool isEdit = htmlHelper.ViewBag.IsEdit != null && htmlHelper.ViewBag.IsEdit;
+                    var pageWidgets = page.PageWidgets;
+                    if (pageWidgets != null && pageWidgets.Any())
+                    {
+                        var renderedWidgets = string.Empty;
+                        foreach (
+                                var pageWidget in
+                                        pageWidgets.Where(x => x.Key.Equals(zoneId, StringComparison.OrdinalIgnoreCase))
+                                )
+                        {
+                            pageWidget.Value.IsEditMode = isEdit;
+                            renderedWidgets += htmlHelper.Partial(
+                                    pageWidget.Value.View,
+                                    pageWidget.Value.Model,
+                                    htmlHelper.ViewData);
+                        }
+                        var html = MvcHtmlString.Create(renderedWidgets);
+                        if (isEdit)
+                        {
+                            html = htmlHelper.Partial(Zone.View, new Zone { Content = html, Name = zoneId });
+                        }
+
+                        return html;
+                    }
                 }
 
-                return MvcHtmlString.Create(renderedWidgets);
             }
             catch (Exception ex)
             {
                 return MvcHtmlString.Create(ex.Message);
             }
+
+            return MvcHtmlString.Create(string.Empty);
         }
     }
 }

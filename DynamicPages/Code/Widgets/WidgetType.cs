@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace DynamicPages.Code.Renderers
+namespace DynamicPages.Code.Widgets
 {
-    public class PartialViewRenderer
+    public enum WidgetType
     {
-
+        FullWidthWidget
     }
 }

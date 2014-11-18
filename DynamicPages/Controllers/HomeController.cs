@@ -5,7 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 
 using DynamicPages.Code;
-using DynamicPages.Code.PageSections;
+using DynamicPages.Code.Pages;
+using DynamicPages.Code.Widgets;
 
 namespace DynamicPages.Controllers
 {
@@ -14,22 +15,22 @@ namespace DynamicPages.Controllers
         public ActionResult Index()
         {
             ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
-            Page page;
+            HomePage page;
             if (Session["Page"] == null)
             {
-                page = new Page();
-                for (int i = 0; i < 10000; i++)
+                page = new HomePage();
+                for (int i = 0; i < 100; i++)
                 {
-                    page.PageSections.Add(
-                            new KeyValuePair<string, IPageSection>(
-                                    "FullWidthSection",
-                                    PageSectionsFactory.GetPageSection("FullWidthSection")));
+                    page.PageWidgets.Add(
+                            new KeyValuePair<string, IWidget>(
+                                    "FullWidth",
+                                    PageSectionsFactory.GetPageSection(WidgetType.FullWidthWidget)));
                 }
                 Session["Page"] = page;
             }
             else
             {
-                page = (Page)Session["Page"];
+                page = (HomePage)Session["Page"];
             }
 
             return View(page.View, page);

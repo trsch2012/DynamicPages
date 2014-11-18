@@ -1,4 +1,4 @@
 ﻿@using DynamicPages.Code.Extensions
-@model DynamicPages.Code.Page
-
-@Html.RenderZone("FullWidthSection")
+@model DynamicPages.Code.Pages.HomePage
+@{ ViewBag.IsEdit = true; }
+@Html.RenderZone("FullWidth")
